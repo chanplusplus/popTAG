@@ -1,0 +1,16 @@
+{
+  "name": "TwitDashBoard",
+  "version": "0.0.0",
+  "description": "Dashboard for displaying twiiter summaries which are sent from Apache Spark Streaming application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chan Pruksapha",
+  "license": "BSD",
+  "dependencies": {
+    "exec": "^0.2.1",
+    "express": "~4.13.4",
+    "socket.io": "~1.4.5"
+  }
+}

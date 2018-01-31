@@ -1,0 +1,133 @@
+/*
+Credit: http://codepen.io/anon/pen/EPBobX
+*/
+
+
+ table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table {border-collapse:collapse; table-layout:fixed; width:400px;}
+       
+tr td:first-child, th:first-child {width:300px; word-wrap:break-word; text-align: left}
+tr td:last-child, th:last-child {width:60px; word-wrap:break-word; text-align: right}
+
+body{
+    font-family: 'Droid Serif', serif;
+    font-size: 14px;
+    color: #2f2f2f;
+    background-color: #f9f7f1;
+    width: 100%;
+    margin:0 auto;
+}
+
+.subhead{
+    text-align: center;
+    text-transform: uppercase;
+    padding: 12px 0 12px 0;
+
+}
+.subhead:before{
+    border-top: 2px solid #2f2f2f;
+    content: '';
+    width: 450px;
+    height: 7px;
+    display: block;
+    margin: 0 auto;
+}
+
+.subhead:after{
+    border-bottom: 2px solid #2f2f2f;
+    content: '';
+    width: 450px;
+    height: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+.collumn{
+    font-size: 14px;
+    line-height: 20px;
+    display: inline-block;
+    padding: 0 1% 0 1%;
+    vertical-align: top;
+    margin-bottom: 20px;
+    transition: all .7s;
+    width: 47%;
+}
+
+
+
+
+.collumn .headline{
+    text-align: center;
+    /*line-height: normal;*/
+    font-family: 'Playfair Display', serif;
+    display: block;
+    margin: 0 auto;
+
+
+}
+
+.collumn .headline.hl4{
+    font-weight: 700;
+    font-size: 14px;
+    box-sizing: border-box;
+    padding: 10px 0 10px 0;
+}
+.collumn .headline.hl4:before{
+    /*border-top: 1px solid #2f2f2f;*/
+    content: '';
+    width: 100px;
+    height: 7px;
+    display: block;
+    margin: 0 auto;
+}
+.collumn .headline.hl4:after{
+    border-bottom: 1px solid #2f2f2f;
+    content: '';
+    width: 100px;
+    height: 10px;
+    display: block;
+    margin: 0 auto;
+
+}
+
+.media {
+    -webkit-filter: sepia(80%) contrast(1) opacity(0.8);
+    filter: sepia(80%) grayscale(1) contrast(1) opacity(0.8);
+    mix-blend-mode: multiply;
+    width: 100%;
+}
+
+@media only all and (max-width: 600px) {
+    body{
+        width: 100%;
+    }
+    .subhead:before{
+        width:80%;
+    }
+    .subhead:after{
+        width:80%;
+    }
+    .collumn{
+        width: 100%;
+    }
+    .collumn + .collumn {
+        display: none;
+    }
+    header{
+        max-width: 320px;
+        font-size: 60px;
+        line-height: 54px;
+        overflow: hidden;
+    }
+
+}
+
+@media only all and (max-width: 375px) {
+    table{width:95%}
+    tr td:first-child, th:first-child {width:85%; word-wrap:break-word; text-align: left}
+    tr td:last-child, th:last-child {width:15%; word-wrap:break-word; text-align: right}
+}

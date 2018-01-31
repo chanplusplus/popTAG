@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>D3's Chart Wrapper</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular.js"></script>
+
+</head>
+<body ng-app="hashtagApp">
+
+  <div ng-controller="D3Controller">
+    <div>
+      <svg barchart-d3 data="glob" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
+
+    <div>
+      <svg barchart-d3 data="th" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
+
+    <div>
+      <svg barchart-d3 data="ja" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
+
+    <div>
+      <svg barchart-d3 data="ko" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
+
+    <div>
+      <svg barchart-d3 data="en" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
+
+    <div>
+      <svg barchart-d3 data="ar" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
+
+  </div>
+
+
+</body>
+  <script src="app.js"></script>
+  <script src="directives/barchartD3.js"></script>
+  <script src="directives/timeseriesD3.js"></script>
+  <script src="controllers/D3Controller.js"></script>
+  <script src="controllers/CodeController.js"></script>
+</html>
