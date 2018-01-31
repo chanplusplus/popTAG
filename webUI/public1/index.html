@@ -4,18 +4,25 @@
     <title>Popular Hashtags and their Language Usage</title>
     <link href='http://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic|Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="newspaper.css">
+    <link rel="stylesheet" href="flexnav.css">
     <!-- link rel="stylesheet" type="text/css" href="jquery.dynatable.css" media="screen" /-->
 </head>
 <body>
 
-    <pre id="json1"></pre>
-    <pre id="json2"></pre>
+  <header class="header">
+    <h1 class="logo"><a href="#">PopularTAG</a></h1>
+      <ul class="main-nav">
+          <li><a href="/table">TABLE</a></li>
+          <li><a href="/chart">CHART</a></li>
+      </ul>
+  </header>
+
 
    <div style="margin: 20px auto; line-height: 20px;">
      <div class="subhead">Top Hashtags Globally</div>
      <table id="tagRanking" >
         <thead>
-          <tr class="header">
+          <tr>
             <th>Tag</th>
             <th>Count</th>
           </tr>
@@ -44,7 +51,7 @@
     </div>
 
 
-   
+
 </body>
 
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -53,7 +60,7 @@
 <!--Add script to update the page and send messages.-->
 <script type="text/javascript">
 
-    
+
   var langISO = [{"code":"fr","status":"production","name":"French"},{"code":"en","status":"production","name":"English"},{"code":"ar","status":"production","name":"Arabic"},{"code":"ja","status":"production","name":"Japanese"},{"code":"es","status":"production","name":"Spanish"},{"code":"de","status":"production","name":"German"},{"code":"it","status":"production","name":"Italian"},{"code":"id","status":"production","name":"Indonesian"},{"code":"pt","status":"production","name":"Portuguese"},{"code":"ko","status":"production","name":"Korean"},{"code":"tr","status":"production","name":"Turkish"},{"code":"ru","status":"production","name":"Russian"},{"code":"nl","status":"production","name":"Dutch"},{"code":"fil","status":"production","name":"Filipino"},{"code":"msa","status":"production","name":"Malay"},{"code":"zh-tw","status":"production","name":"Traditional Chinese"},{"code":"zh-cn","status":"production","name":"Simplified Chinese"},{"code":"hi","status":"production","name":"Hindi"},{"code":"no","status":"production","name":"Norwegian"},{"code":"sv","status":"production","name":"Swedish"},{"code":"fi","status":"production","name":"Finnish"},{"code":"da","status":"production","name":"Danish"},{"code":"pl","status":"production","name":"Polish"},{"code":"hu","status":"production","name":"Hungarian"},{"code":"fa","status":"production","name":"Farsi"},{"code":"he","status":"production","name":"Hebrew"},{"code":"ur","status":"production","name":"Urdu"},{"code":"th","status":"production","name":"Thai"},{"code":"en-gb","status":"production","name":"English UK"}] ;
   var blackList = new Set();
   // blackList.add("ht");
@@ -76,10 +83,10 @@
   $('#tagRanking').find('tbody').append(rowstr10);
 
   for(i=0; i < langISO.length; ++i) {
-    
-    if(blackList.has(langISO[i].code)) continue; 
 
-    var $div = $('<div class="collumn" style="display: inline-block"><span class="headline hl4"></span><table><thead><tr class="header"><th>Tag</th><th>Count</th></tr></thead><tbody></tbody></table></div>');
+    if(blackList.has(langISO[i].code)) continue;
+
+    var $div = $('<div class="collumn" style="display: inline-block"><span class="headline hl4"></span><table><thead><tr><th>Tag</th><th>Count</th></tr></thead><tbody></tbody></table></div>');
     $('#langBreakDown').append($div);
     $div.find('span').text(langISO[i].name);
     $table = $div.find('table')
@@ -93,7 +100,7 @@
 <script type="text/javascript">
 
   // function setTable(data, tableObj) {
-    
+
   //     var mytab = $(tableObj).dynatable({
   //       table: {
   //         defaultColumnIdStyle: 'camelCase',
@@ -111,7 +118,7 @@
   //       dataset: {
   //         records: data
   //       }
-  //     }).data('dynatable');          
+  //     }).data('dynatable');
   //     mytab.settings.dataset.originalRecords = data;
   //     mytab.process();
   // }
@@ -124,7 +131,7 @@
       } else{
           $(this).find('td:first').text('');
           $(this).find('td:last').text('');
-      }      
+      }
     });
   }
 
@@ -138,7 +145,7 @@
         //if (key < 3) {
           value = data[j];
           //console.log(value);
-          if(blackList.has(value.lang)) continue; 
+          if(blackList.has(value.lang)) continue;
           setTable(value.topTags, $('#lang-'+value.lang));
         //}
       }
@@ -149,7 +156,7 @@
 <script type="text/javascript">
 
   // var initialTopTags = [{"count":11,"tag":"#KCA"},{"count":9,"tag":"#ALDUBTheQuestion"},{"count":5,"tag":"#VoteKathrynFPP"},{"count":3,"tag":"#LunesDeGanarSeguidores"},{"count":2,"tag":"#VotaSebastiánVillalobos"}];
-  
+
   // var initialTopLangs = [{"tag":"#LunesDeGanarSeguidores","topLangs":[{"count":3,"lang":"es"}]},{"tag":"#VotaSebastiánVillalobos","topLangs":[{"count":1,"lang":"es"},{"count":1,"lang":"en"}]},{"tag":"#ALDUBTheQuestion","topLangs":[{"count":5,"lang":"tl"},{"count":4,"lang":"en"}]},{"tag":"#VoteKathrynFPP","topLangs":[{"count":3,"lang":"und"},{"count":1,"lang":"tl"},{"count":1,"lang":"en"}]},{"tag":"#KCA","topLangs":[{"count":3,"lang":"und"},{"count":3,"lang":"en"},{"count":2,"lang":"tl"},{"count":2,"lang":"es"},{"count":1,"lang":"pt"}]}];
 
   //processTagCountJSON(initialTopTags);
@@ -175,10 +182,8 @@
         console.log('received topTagByLangs: ' + data);
         // Add the message to the page.
         //$('#json2').html(JSON.stringify(data));
-        processLangCountJSON(data);                
+        processLangCountJSON(data);
       });
 
     });
 </script>
-    
-

@@ -8,7 +8,7 @@ hashtagApp.directive('barchartD3', ['$document','d3Factory', function($document,
         d3Factory.d3().then(function(d3){
 
           var format = d3.format(",");
-          var margin = {top: parseInt(attr.marginTop), right: parseInt(attr.marginRight), bottom: parseInt(attr.marginBottom), left: parseInt(attr.marginLeft)}, 
+          var margin = {top: parseInt(attr.marginTop), right: parseInt(attr.marginRight), bottom: parseInt(attr.marginBottom), left: parseInt(attr.marginLeft)},
           width = parseInt(attr.canvasWidth);
           var height = 200 - margin.top - margin.bottom;
 
@@ -35,6 +35,10 @@ hashtagApp.directive('barchartD3', ['$document','d3Factory', function($document,
             .attr("class", "domain")
             .attr("y2", height);
 
+          /* initial drawing of x-axis */
+          x.domain([0, 10]);
+          d3.transition(svg).select(".x.axis")
+                .call(xAxis);
 
           scope.$watch('data', function(newData) {
             scope.render(newData);
@@ -58,7 +62,7 @@ hashtagApp.directive('barchartD3', ['$document','d3Factory', function($document,
                     .attr("class", "bar")
                     .attr("transform", function(d) { return "translate(0," + (y(d.tag) + height) + ")"; })
                     .style("fill-opacity", 0);
-                
+
                 barEnter.append("rect")
                     .attr("width", function(d) {return x(parseInt(d.count)); })
                     .attr("height", y.rangeBand());
@@ -106,8 +110,8 @@ hashtagApp.directive('barchartD3', ['$document','d3Factory', function($document,
                     .text(function(d) { return format(parseInt(d.count)); });
 
                 d3.transition(svg).select(".x.axis")
-                    .call(xAxis);    
-              });  
+                    .call(xAxis);
+              });
           }
 
         });

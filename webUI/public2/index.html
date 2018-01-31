@@ -4,36 +4,72 @@
   <meta charset="UTF-8">
   <title>D3's Chart Wrapper</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/flexlayout.css">
+  <link rel="stylesheet" href="css/flexnav.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular.js"></script>
 
 </head>
 <body ng-app="hashtagApp">
 
-  <div ng-controller="D3Controller">
+<header class="header">
+  <h1 class="logo"><a href="#">PopularTAG</a></h1>
+    <ul class="main-nav">
+        <li><a href="/table">TABLE</a></li>
+        <li><a href="/chart">CHART</a></li>
+    </ul>
+</header>
+
+
+  <div ng-controller="D3Controller" class="grid2x2">
     <div>
+      <div class="box">All</div>
       <svg barchart-d3 data="glob" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
     </div>
 
     <div>
-      <svg barchart-d3 data="th" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
-    </div>
-
-    <div>
-      <svg barchart-d3 data="ja" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
-    </div>
-
-    <div>
-      <svg barchart-d3 data="ko" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
-    </div>
-
-    <div>
+      <div class="box">English</div>
       <svg barchart-d3 data="en" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
     </div>
 
     <div>
+      <div class="box">Thai</div>
+      <svg barchart-d3 data="th" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
+
+    <div>
+      <div class="box">Japanese</div>
+      <svg barchart-d3 data="ja" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
+
+    <div>
+      <div class="box">Korean</div>
+      <svg barchart-d3 data="ko" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
+
+    <div>
+      <div class="box">Arabic</div>
       <svg barchart-d3 data="ar" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
     </div>
 
+    <div>
+      <div class="box">German</div>
+      <svg barchart-d3 data="de" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
+
+    <div>
+      <div class="box">French</div>
+      <svg barchart-d3 data="fr" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
+
+    <div>
+      <div class="box">Italian</div>
+      <svg barchart-d3 data="it" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
+
+    <div>
+      <div class="box">Dutch</div>
+      <svg barchart-d3 data="nl" margin-top="20" margin-right="40" margin-bottom="10" margin-left="170" canvas-width="400"></svg>
+    </div>
   </div>
 
 

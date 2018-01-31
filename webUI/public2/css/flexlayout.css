@@ -1,0 +1,23 @@
+/*
+Ref. https://codepen.io/fabiobiondi/pen/PqeWGv
+*/
+
+.grid2x2 {
+  min-height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.grid2x2 > div {
+  display: flex;
+  flex-basis: calc(25% - 40px);
+  justify-content: flex-start;
+  flex-direction: column;
+}
+.grid2x2 > div > div {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.box { margin: 10px; }

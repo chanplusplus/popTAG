@@ -9,7 +9,7 @@ Credit: http://codepen.io/anon/pen/EPBobX
 }
 
 table {border-collapse:collapse; table-layout:fixed; width:400px;}
-       
+
 tr td:first-child, th:first-child {width:300px; word-wrap:break-word; text-align: left}
 tr td:last-child, th:last-child {width:60px; word-wrap:break-word; text-align: right}
 
@@ -17,7 +17,7 @@ body{
     font-family: 'Droid Serif', serif;
     font-size: 14px;
     color: #2f2f2f;
-    background-color: #f9f7f1;
+    background-color: #eee;
     width: 100%;
     margin:0 auto;
 }
@@ -117,12 +117,7 @@ body{
     .collumn + .collumn {
         display: none;
     }
-    header{
-        max-width: 320px;
-        font-size: 60px;
-        line-height: 54px;
-        overflow: hidden;
-    }
+
 
 }
 
