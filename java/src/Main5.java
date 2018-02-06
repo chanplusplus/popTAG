@@ -74,10 +74,10 @@ public class Main5 {
         Duration outputWindow = new Duration(60000);
 
         // Configuring Twitter credentials
-        String apiKey = "On4lmf0wFOQ72qpZLMdJHYOXQ";
-        String apiSecret = "tskmQAEwFJSEDGntnkRGgjOxX8nVr8JyTbwtiliJ0G3eumuyFR";
-        String accessToken = "35429495-V3UmzdTxQX3Wqh8Zfh8BsjlGGcxdeWSELTCh4VLBe";
-        String accessTokenSecret = "vgKiJPoPVui2baXZCAW878IothSD5qYMO6K3INfbMXD7q";
+        String apiKey = "";
+        String apiSecret = "";
+        String accessToken = "";
+        String accessTokenSecret = "";
         System.setProperty("twitter4j.oauth.consumerKey", apiKey);
         System.setProperty("twitter4j.oauth.consumerSecret", apiSecret);
         System.setProperty("twitter4j.oauth.accessToken", accessToken);
