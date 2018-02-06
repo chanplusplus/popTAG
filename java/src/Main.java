@@ -74,10 +74,10 @@ public class Main {
         Duration outputWindow = new Duration(60000);
 
         // Configuring Twitter credentials
-        String apiKey = "...";
-        String apiSecret = "...";
-        String accessToken = "...";
-        String accessTokenSecret = "...";
+        String apiKey = "On4lmf0wFOQ72qpZLMdJHYOXQ";
+        String apiSecret = "tskmQAEwFJSEDGntnkRGgjOxX8nVr8JyTbwtiliJ0G3eumuyFR";
+        String accessToken = "35429495-V3UmzdTxQX3Wqh8Zfh8BsjlGGcxdeWSELTCh4VLBe";
+        String accessTokenSecret = "vgKiJPoPVui2baXZCAW878IothSD5qYMO6K3INfbMXD7q";
         System.setProperty("twitter4j.oauth.consumerKey", apiKey);
         System.setProperty("twitter4j.oauth.consumerSecret", apiSecret);
         System.setProperty("twitter4j.oauth.accessToken", accessToken);
@@ -123,37 +123,25 @@ public class Main {
 
         /*****   Get top N tags   *****/
 
-        JavaPairDStream<Integer,String> totalHashtags = hashTagTotals.mapToPair(
-                new PairFunction<Tuple2<String, Integer>, Integer, String>(){
-                    @Override
-                    public Tuple2<Integer, String> call(Tuple2<String,Integer> lt) throws Exception{
-                        return new Tuple2<Integer, String>(lt._2(),lt._1());
-                    }
-                });
-
-
-        class MyComparable implements Comparator<Tuple2<Integer, String>>, Serializable {
-            public int compare(Tuple2<Integer, String> o1, Tuple2<Integer, String> o2) {
-                return o2._1() - o1._1();
+        class MyComparable implements Comparator<Tuple2<String, Integer>>, Serializable {
+            public int compare(Tuple2<String, Integer> o1, Tuple2<String, Integer> o2) {
+                return o2._2() - o1._2();
             }
         };
 
-        totalHashtags.foreachRDD(new VoidFunction<JavaPairRDD<Integer, String>>() {
+        hashTagTotals.foreachRDD(new VoidFunction<JavaPairRDD<String, Integer>>() {
             @Override
-            public void call(JavaPairRDD<Integer, String> totalHashTag) throws Exception {
+            public void call(JavaPairRDD<String, Integer> htTotal) throws Exception {
 
-                List<Tuple2<Integer, String>> topList = totalHashTag.takeOrdered(topNTags, new MyComparable());
-                List<Tuple2< String, Integer>> topList_rev = new ArrayList<Tuple2< String, Integer>>(topList.size());
-
+                List<Tuple2<String, Integer>> topList = htTotal.takeOrdered(topNTags, new MyComparable());
+               
                 // List of (tag, cnt)
                 JSONArray jsonArr = new JSONArray();
 
-                for(Tuple2<Integer,String> e: topList) {
-                    topList_rev.add(new Tuple2<String,Integer>(e._2(), e._1()));
-
+                for(Tuple2<String, Integer> e: topList) {
                     // Single (tag, cnt)
                     JSONObject tagcnt = new JSONObject();
-                    jsonArr.put(tagcnt.put("tag", e._2()).put("count", e._1()));
+                    jsonArr.put(tagcnt.put("tag", e._1()).put("count", e._2()));
                 }
                 socket.emit("topTags",jsonArr);
             }
@@ -201,65 +189,69 @@ public class Main {
         JavaPairDStream<Tuple2<String,String>, Integer> langAndTagTotals = langAndTagCounts
                 .reduceByKeyAndWindow(addition,outputWindow, outputSlide);
 
-        class StringIntPair implements Comparable<StringIntPair>, Serializable {
-            String str; Integer num;
-            StringIntPair(String str, Integer num) {
-                this.str = str; this.num = num;
+        class TagTotalPair extends Tuple2<String, Integer> implements Comparable<TagTotalPair>, Serializable {
+            public String getTag(){
+                return this._1();
             }
-            public int compareTo(StringIntPair o) {
-                return this.num - o.num;
+            public Integer getTotal(){
+                return this._2();
+            }
+            TagTotalPair(String tag, Integer total) {
+                super(tag, total);
+            }
+            public int compareTo(TagTotalPair o) {
+                return this._2() - o._2();
             }
         };
 
-
-        JavaPairDStream<String, StringIntPair> langAndTagTotals2 = langAndTagTotals.mapToPair(
-                new PairFunction<Tuple2<Tuple2<String,String>, Integer>, String, StringIntPair>(){
+        JavaPairDStream<String, TagTotalPair> langAndTagTotals2 = langAndTagTotals.mapToPair(new PairFunction<Tuple2<Tuple2<String,String>, Integer>, String, TagTotalPair>(){
                     @Override
-                    public Tuple2<String, StringIntPair> call(Tuple2<Tuple2<String,String>, Integer> langTagTots) throws Exception {
+                    public Tuple2<String, TagTotalPair> call(Tuple2<Tuple2<String,String>, Integer> langTagTots) throws Exception {
                         Tuple2<String,String> langTag = langTagTots._1();
                         String lang = langTag._1();
                         String tag = langTag._2();
                         Integer total = langTagTots._2();
-                        return new Tuple2<String, StringIntPair>(lang, new StringIntPair(tag, total));
+                        return new Tuple2<String, TagTotalPair>(lang, new TagTotalPair(tag, total));
                     }
                 }
         );
-
 
         /*
             This part perform "Build priority queues, containing top-K hash tags, indexed by language"
          */
 
-        class MinQStringPair extends PriorityQueue<StringIntPair> {
+        class MinQStringPair extends PriorityQueue<TagTotalPair> {
             int maxSize;
             MinQStringPair(int maxSize) {
                 super(maxSize);
                 this.maxSize = maxSize;
             }
-            public MinQStringPair putIntoTopK(StringIntPair newPair) {
-                if(size() < maxSize )  super.add(newPair);
-                else {
-                    if(newPair.compareTo(super.peek()) > 0) {
-                        super.poll();
-                        super.add(newPair);
-                    }
+            public boolean add(TagTotalPair newPair) {
+                if(size() < maxSize )  {
+                    super.add(newPair);
+                    return true;
                 }
-                return this;
+                else if(newPair.compareTo(super.peek()) > 0) {
+                    super.poll();
+                    super.add(newPair);
+                    return true;
+                }
+                return false;
             }
         };
 
 
-        Function<StringIntPair, MinQStringPair> createCombiner = new Function<StringIntPair, MinQStringPair>() {
-            public MinQStringPair call(StringIntPair langCnt) throws Exception{
+        Function<TagTotalPair, MinQStringPair> createCombiner = new Function<TagTotalPair, MinQStringPair>() {
+            public MinQStringPair call(TagTotalPair langCnt) throws Exception{
                 MinQStringPair minQ = new MinQStringPair(topNTags);
-                minQ.putIntoTopK(langCnt);
+                minQ.add(langCnt);
                 return minQ;
             }
         };
-        Function2<MinQStringPair, StringIntPair, MinQStringPair> mergeValue =
-                new Function2<MinQStringPair, StringIntPair, MinQStringPair>() {
-                    public MinQStringPair call(MinQStringPair minQ, StringIntPair langCnt) throws Exception {
-                        minQ.putIntoTopK(langCnt);
+        Function2<MinQStringPair, TagTotalPair, MinQStringPair> mergeValue =
+                new Function2<MinQStringPair, TagTotalPair, MinQStringPair>() {
+                    public MinQStringPair call(MinQStringPair minQ, TagTotalPair langCnt) throws Exception {
+                        minQ.add(langCnt);
                         return minQ;
                     }
                 };
@@ -270,7 +262,7 @@ public class Main {
                         if(qa.size() > qb.size()) { qc = qa; qd = qb; }
                         else { qc = qb; qd = qa; }
                         while(qd.size() != 0)
-                            qc.putIntoTopK(qd.poll());
+                            qc.add(qd.poll());
                         return qc;
                     }
                 };
@@ -294,13 +286,13 @@ public class Main {
 
                         jsonObj.put("lang", pair._1());
 
-                        ArrayList<StringIntPair> langCntList = new ArrayList<StringIntPair>(pair._2());
+                        ArrayList<TagTotalPair> langCntList = new ArrayList<TagTotalPair>(pair._2());
                         Collections.sort(langCntList);
                         Collections.reverse(langCntList);
                         JSONArray jsonArr2 = new JSONArray();
-                        for (StringIntPair e : langCntList) {
-                            System.out.print(String.format(" (%s,%d)", e.str, e.num));
-                            jsonArr2.put(new JSONObject().put("tag", e.str).put("count", e.num));
+                        for (TagTotalPair e : langCntList) {
+                            System.out.print(String.format(" (%s,%d)", e.getTag(), e.getTotal()));
+                            jsonArr2.put(new JSONObject().put("tag", e.getTag()).put("count", e.getTotal()));
                         }
 
                         System.out.println();
@@ -337,7 +329,7 @@ public class Main {
     public static void main(String[] args) throws URISyntaxException {
 
         Logger.getLogger("org").setLevel(Level.OFF);
-        SparkConf sparkConf = new SparkConf().setAppName("PopularTag4.0");
+        SparkConf sparkConf = new SparkConf().setAppName("PopularTag6.0");
 
         final JavaStreamingContext jssc =  new JavaStreamingContext(sparkConf, new Duration(5000));
         Socket socket = getSocket();
