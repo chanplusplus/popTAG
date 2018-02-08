@@ -277,9 +277,9 @@ In order to maintain on top `K` items and no more, the following logic must be i
 
 Actual implementation is carried by combineByKey which internally call these three following functions:
 
-1. `createCombiner` is called when a key(in the RDD element) is found for the first time in a given Partition. This method creates an initial value for the accumulator for that key
+1. `createCombiner` is called when a key(in the RDD element) is found for the first time in a given Partition. This method creates an initial value for the accumulator for that key.
 ..* In our case, the accumulator is our heap. An empty heap is created when a key(or language) is found.
-2. `mergeValue` is called when the key already has an accumulator
+2. `mergeValue` is called when the key already has an accumulator.
 ..* When an accumulator(heap) met with a new item, an item is added (or not) according to the logic in last section.
 3. `mergeCombiners` is called when more than one partition has accumulator for the same key
 ..* Two heaps from different partitions are merged by simply removing items from one heap and add it to another one-by-one.
