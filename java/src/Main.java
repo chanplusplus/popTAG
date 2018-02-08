@@ -134,7 +134,7 @@ public class Main {
             public void call(JavaPairRDD<String, Integer> htTotal) throws Exception {
 
                 List<Tuple2<String, Integer>> topList = htTotal.takeOrdered(topNTags, new MyComparable());
-               
+
                 // List of (tag, cnt)
                 JSONArray jsonArr = new JSONArray();
 
@@ -200,7 +200,7 @@ public class Main {
                 super(tag, total);
             }
             public int compareTo(TagTotalPair o) {
-                return this._2() - o._2();
+                return this.getTotal() - o.getTotal();
             }
         };
 
